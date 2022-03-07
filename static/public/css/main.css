@@ -1,5 +1,5 @@
 .navigation-bar a {
-    color: white; /* force color for links to be white and not whatever the default may be*/
+    color: rgba(255, 255, 255, 0.904); /* force color for links to be white and not whatever the default may be*/
     text-decoration: none; /* ensures that there is no underline*/
 }
 .navigation-bar .active{
@@ -11,7 +11,7 @@
     padding: 10px 15px 10px 20px;
 }
 .navigation-bar {
-    background-color: rgb(37, 99, 29);
+    background-color: rgb(91, 145, 83);
     color: white;
     display: flex;
     flex-direction: column-reverse;
@@ -35,12 +35,12 @@
     
     background-image: url(/public/img/image4.jpg);
     background-attachment: fixed;
-    background-size: auto 1200px;
+    background-size: auto 900px;
     background-repeat: no-repeat;
     
     height: 500px;
     font-size: 2em;
-    border: 1px solid #eeeeee;
+    border: 1px solid #4b8675;
     padding: 10px 15px 10px 20px;
     /*margin: 10px;*/
     
@@ -69,7 +69,7 @@
     border: 1px solid #eeeeee;
     padding: 10px 15px 10px 20px;
     /*margin: 10px;*/
-    color: #000000;
+    color: #569443;
     opacity: .8;
     
 }
