@@ -1,0 +1,174 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="grid-container">
+    <div class="navigation-bar grid-item-row-1">
+        <div class="navigation-bar-left">
+            <div>
+                <a href="/" >Home</a>
+            </div>
+            <div>
+                <a href="/about-us">About Us</a>
+            </div>
+            <div>
+                <a href="/inventories/create" class="active">Register Inventory</a>
+            </div>
+        </div>
+        <div class="navigation-bar-right">
+            <div>
+                <input type="search">
+                <button>Search</button>
+            </div>
+
+        </div>
+    </div>
+    <div class="grid-item-row-2">
+        <form class="box" id="RecordinventoryForm" action="/inventories" method="POST">
+            <fieldset id="RecordinventoriesFieldSet" class="container">
+                <div class="field">
+                    <label class="label">farmproducename:</label>
+                    <div class="control has-icons-right">
+                        <input class="input" id="farmproducename" name="farmproducename" type="text" placeholder="Farm produce name" >
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">farmproducedescription:</label>
+                    <div class="control has-icons-right">
+                        <input class="input" id="farmproducedescription" name="farmproducedescription" type="text" placeholder="farmproducedescription">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">photourl:</label>
+                    <div class="control has-icons-right">
+                        <input class="input" id="photourl" name="photourl" type="text" placeholder="photourl">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">weightinkg:</label>
+                    <div class="control has-icons-right">
+                        <input class="input" id="weightinkg" name="weightinkg" type="text" placeholder="Weight in kg" placeholder="weightinkg">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">priceperunit:</label>
+                    <div class="control has-icons-right">
+                        <input class="input" id="priceperunit" name="priceperunit" type="text">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">quantityavailable:</label>
+                    <div class="control has-icons-right">
+                        <input class="input" id="quantityavailable" name="quantityavailable" type="text" placeholder="quantityavailable">
+                    </div>
+                
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button type="submit" id="submitRecordinventory" class="button is-link is-small">Submit</button>
+                    </div>
+                    <div class="control">
+                        <button type="reset" class="button is-light is-small">Clear</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        
+    </div>
+</div>
+
+
+<section class="section">
+    <div class="container">
+        <div id="notification" class="notification container is-hidden animated slideInUp">
+            <button class="delete"></button>
+            <div id="notificationMessage">
+                {{notificationMessage}}
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+{% endblock %}
+
+<script>
+    const RecordinventoryForm = document.getElementById('RecordinventoryForm');
+
+    RecordinventoryForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    //Get fields and check validities
+    const farmproducename = document.getElementById('farmproducename').value;
+    if (farmproducename == '') {
+        farmproducename.reportValidity();
+        return false;
+    }
+
+    const farmproducedescription = document.getElementById(farmproducedescription).value;
+    
+    const photourl = document.getElementById('photourl').value;
+    if (photourl == '') {
+        photourl.reportValidity();
+        return false;
+    }
+
+    const weightinkg = document.getElementById('weightinkg').value;
+    if (weightinkg == '') {
+        weightinkg.reportValidity();
+        return false;
+    }
+
+    const priceperunit = document.getElementById('priceperunit').value;
+    if (priceperunit == '') {
+        priceperunit.reportValidity();
+        return false;
+    }
+    
+    const quantityavailable = document.getElementById('quantityavailable').value;
+   
+
+
+    //start the button spinner
+    document.getElementById("submitRecordinventoryForm").classList.add("is-loading");
+
+    //prepare init for fetch
+    const init = {
+        method: 'Post',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        //credentials: 'same-origin',
+        body: JSON.stringify({ farmproducename, farmproducedescription, photourl, weightinkg, priceperunit, quantityavailable,})
+    }
+
+    //call fetch
+    fetch('/inventories', init)
+        .then(response => response.json())
+        .then(data => {
+            //alert(JSON.stringify(data))
+            //remove spinner class
+            document.getElementById("submitRecordinventoryForm").classList.remove("is-loading");
+            //set notification
+            document.getElementById("notificationMessage").innerHTML = 'Inventory creation successful';
+            //add notification color class sent
+            document.getElementById("notification").classList.add("is-success");
+            //remove is-hidden from notificationWrapper
+            document.getElementById("notification").classList.remove("is-hidden");
+
+        })
+        .catch(error => {
+            //remove spinner class
+            document.getElementById("submitRecordinventoryForm").classList.remove("is-loading");
+
+            document.getElementById("notificationMessage").innerHTML = error.message;
+            //add notification color class sent
+            document.getElementById("notification").classList.add("is-danger");
+            //remove is-hidden from notificationWrapper
+            document.getElementById("notification").classList.remove("is-hidden");
+
+        });
+    })
+
+</script>
